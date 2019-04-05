@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <script src="script.js"></script>
+    <h1>Information Input</h1>
+    Title: <input type="text" id="title" /><br />
+    X-Axis Label: <input type="text" id="xAxisLabel" /><br />
+    Y-Axis Label: <input type="text" id="yAxisLabel" /><br />
+
+    <h2>Bar 1</h2>
+    Label: <input type="text" id="bar1Label" /><br />
+    Height: <input type="text" id="bar1Height" /><br />
+    <br />
+
+    <h2>Bar 2</h2>
+    Label: <input type="text" id="bar2Label" /><br />
+    Height: <input type="text" id="bar2Height" /><br />
+    <br />
+
+    <h2>Bar 3</h2>
+    Label: <input type="text" id="bar3Label" /><br />
+    Height: <input type="text" id="bar3Height" /><br />
+    <br />
+
+    <h2>Bar 4</h2>
+    Label: <input type="text" id="bar4Label" /><br />
+    Height: <input type="text" id="bar4Height" /><br />
+    <br />
+
+    <h2>Bar 5</h2>
+    Label: <input type="text" id="bar5Label" /><br />
+    Height: <input type="text" id="bar5Height" /><br />
+    <br />
+    <button id="generate" onclick="generateSvg()">Generate</button>
+    <br />
+    <button id="downloadSvg" onclick="downloadSvg()" style="display: none;">Download Svg</button>
+    <br />
+    <svg width="1000" height="1000" id="svgPanel"></svg>
+</body>
+
+</html>
