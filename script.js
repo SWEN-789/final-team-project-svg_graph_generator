@@ -16,21 +16,21 @@ bars = [
     },
 ]
 
-titleSvg = `<text x="400" y="50" fill="black"><a>${title}</a></text>`;
+titleSvg = `<text x="400" y="50" fill="black" id="title ${title}"><a>${title}</a></text>`;
 
-xAxisLabel = `<text x="250" y="800" fill="black"><a>${xAxisLabelString}</a></text>`;
+xAxisLabel = `<text x="250" y="800" fill="black" id="xAxis Label ${xAxisLabelString}"><a>${xAxisLabelString}</a></text>`;
 xAxisLine = `<line x1="100" y1="700" x2="600" y2="700" style="stroke-width: 2; stroke:black" title="x-axis, label is ${xAxisLabelString}"/>`;
 xAxisTicks = function () {
     let i = 0;
     let interval = 500 / bars.length;
     let svg = "";
     for (i = 0; i < bars.length; i++) {
-        svg += `<text x="${100 + (interval * (i+1)) - 20}" y="750" fill="black"><a>${bars[i].label}</a></text>`;
+        svg += `<text x="${100 + (interval * (i + 1)) - 20}" y="750" fill="black"><a>${bars[i].label}</a></text>`;
     }
     return svg;
 }
 
-yAxisLabel = `<text x="25" y="75" fill="black"><a>${yAxisLabelString}</a></text>`;
+yAxisLabel = `<text x="25" y="75" fill="black" id="yAxis Label ${yAxisLabelString}"><a>${yAxisLabelString}</a></text>`;
 yAxisLine = `<line x1="100" y1="100" x2="100" y2="700" style="stroke-width: 2; stroke:black" title="y-axis, label is ${yAxisLabelString}"/>`;
 yAxisTicks = function () {
     let i = 1;
@@ -52,7 +52,7 @@ barsSvg = function () {
         let height = (600 / ticks) * bars[i].height;
         console.log(height);
         let y = 700 - height;
-        svg += `<rect x="${100 + (interval * (i+1)) - (interval * 2 / 3)}" y="${y}" height=${height} width="${interval * 2 / 3}" fill="black"/>>`;
+        svg += `<rect x="${100 + (interval * (i + 1)) - (interval * 2 / 3)}" y="${y}" height="${height}" width="${interval * 2 / 3}" fill="black" id="bar ${i} height ${bars[i].height}"/>`;
     }
     console.log(svg);
     return svg;
@@ -69,12 +69,12 @@ function generateSvg() {
 }
 
 function updateTemplates() {
-    titleSvg = `<text x="400" y="50" fill="black"><a>${title}</a></text>`;
+    titleSvg = `<text x="400" y="50" fill="black" id="title ${title}"><a>${title}</a></text>`;
 
-    xAxisLabel = `<text x="250" y="800" fill="black"><a>${xAxisLabelString}</a></text>`;
+    xAxisLabel = `<text x="250" y="800" fill="black" id="xAxis Label ${xAxisLabelString}"><a>${xAxisLabelString}</a></text>`;
     xAxisLine = `<line x1="100" y1="700" x2="600" y2="700" style="stroke-width: 2; stroke:black" title="x-axis, label is ${xAxisLabelString}"/>`;
 
-    yAxisLabel = `<text x="25" y="75" fill="black"><a>${yAxisLabelString}</a></text>`;
+    yAxisLabel = `<text x="25" y="75" fill="black" id="yAxis Label ${yAxisLabelString}"><a>${yAxisLabelString}</a></text>`;
     yAxisLine = `<line x1="100" y1="100" x2="100" y2="700" style="stroke-width: 2; stroke:black" title="y-axis, label is ${yAxisLabelString}"/>`;
 }
 
@@ -132,4 +132,11 @@ function downloadSvg() {
     element.click();
 
     document.body.removeChild(element);
+}
+
+async function getSvgData() {
+    console.log("test");
+    let file = document.getElementById("file").files[0];
+    let text = await (new Response(file.slice(0, file.size))).text();
+    console.log(text);
 }
