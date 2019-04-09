@@ -1,15 +1,11 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). I created this using Node 10.15 (with npm 6.4.1) available here:<https://nodejs.org/en/download/>
+# Quick Start:
 
-## Available Scripts
+1. Download Nodejs here:
+   <https://nodejs.org/en/download/>
+2. In this directory (./svgraph) install dependencies with:
+   `npm install`
+3. Start up the local server with:
+   `npm start`
+   ​
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
