@@ -54,7 +54,7 @@ class Generator extends Component {
 
     addElementModal() {
         return (
-            <Modal basic open={this.state.modalOpen} onClose={this.handleClose} trigger={<Button fluid icon="plus square" onClick={this.handleOpen} primary content="Add a data point"></Button>}>
+            <Modal focusable basic role="alertdialog" open={this.state.modalOpen} onClose={this.handleClose} trigger={<Button fluid icon="plus square" onClick={this.handleOpen} primary content="Add a data point"></Button>}>
                 <Header icon='plus square' content='Add a data point' />
                 <Modal.Content >
                     <Modal.Description>
