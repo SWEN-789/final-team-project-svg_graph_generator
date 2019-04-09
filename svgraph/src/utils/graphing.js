@@ -77,7 +77,7 @@ function drawGraph (props)  {
         .data(props.datapoints)
         .enter()
         .append('rect')
-        .attr('aria-labelledby', (s) => xScale(s.number))
+        .attr('title', (s) => 'Bar number ' + s.number + ' labeled ' + s.label + ' with a value of ' + s.value)
         .attr('x', (s) => xScale(s.label))
         .attr('y', (s) => yScale(s.value))
         .attr('height', (s) => height - yScale(s.value))
