@@ -1,6 +1,6 @@
 const margin = 60;
-const width = 500 - 2 * margin;
-const height = 300 - 2 * margin;
+const width = 800 - 2 * margin;
+const height = 500 - 2 * margin;
 
 function drawTitle (svg, props) {
     svg.append('text')

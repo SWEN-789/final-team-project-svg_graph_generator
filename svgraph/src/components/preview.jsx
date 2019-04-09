@@ -29,7 +29,7 @@ class Preview extends Component {
                 Bar Graph Preview
             </Header>
             <Segment id="graph">
-                <svg id="svg_graph" style={{width:500, height:300}}/>
+                <svg id="svg_graph" style={{width: 800, height: 500}}/>
             </Segment>
 
             <Button fluid id="downloadsvg" icon="download" primary content="Download the graph" onClick={this.download}></Button>
