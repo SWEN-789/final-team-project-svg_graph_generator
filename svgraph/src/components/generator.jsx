@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, Icon, Grid, List, Header, Modal, Label } from 'semantic-ui-react'
-
+import { CSVReader } from 'react-papaparse';
 
 class Generator extends Component {
     constructor(props) {
@@ -11,16 +11,47 @@ class Generator extends Component {
             label: '',
             xtitle: '',
             ytitle: '',
-            title: ''
+            title: '',
+            elementModalOpen: false,
+            csvModalOpen: false
         }
+
+        this.fileInput = React.createRef();
     }
 
     handleClose = (event) => {
-        this.setState({ modalOpen: false })
+        console.error(event.target, '---')
+        this.setState({ [event.target.name]: false })
     }
 
     handleOpen = (event) => {
-        this.setState({ modalOpen: true })
+        console.error(event.target)
+        this.setState({ [event.target.name]: true })
+    }
+
+    handleReadCSV = (data) => {
+        console.log(data);
+        this.setState({csvData: data}, () => {
+            if (this.state.csvData) {
+                let points = this.state.addedDataPoints
+                this.state.csvData.data.forEach((datapoint) => {
+                    points.push({value: datapoint[Object.keys(datapoint)[0]], label: datapoint[Object.keys(datapoint)[1]], number: points.length + 1})
+                })
+    
+                this.setState({addedDataPoints: points, bar: '',value: ''}, () => {
+                    this.props.updatePreview(this.state.addedDataPoints, this.state.title, this.state.xtitle, this.state.ytitle)
+                    this.handleClose({target: {name: 'csvModalOpen'}})
+                })
+            }
+        })
+    }
+
+    handleOnError = (err, file, inputElem, reason) => {
+        console.log(err);
+    }
+    
+    handleImportOffer = () => {
+        this.fileInput.current.click();
     }
 
     handleChange = (event) => {
@@ -48,13 +79,13 @@ class Generator extends Component {
         points.push({value: this.state.value, label: this.state.label, number: points.length + 1})
         this.setState({addedDataPoints: points, bar: '',value: ''}, () => {
             this.props.updatePreview(this.state.addedDataPoints, this.state.title, this.state.xtitle, this.state.ytitle)
-            this.handleClose()
+            this.handleClose({target: {name: 'elementModalOpen'}})
         })
     }
 
     addElementModal() {
         return (
-            <Modal basic open={this.state.modalOpen} onClose={this.handleClose} trigger={<Button fluid icon="plus square" onClick={this.handleOpen} primary content="Add a data point"></Button>}>
+            <Modal  basic open={this.state.elementModalOpen} onClose={this.handleClose} trigger={<Button name='elementModalOpen' fluid icon="plus square" onClick={this.handleOpen} primary content="Add a data point"></Button>}>
                 <Header icon='plus square' content='Add a data point' />
                 <Modal.Content >
                     <Modal.Description>
@@ -69,11 +100,11 @@ class Generator extends Component {
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='green' inverted onClick={this.addDataPoint}>
+                    <Button name='elementModalOpen' color='green' inverted onClick={this.addDataPoint}>
                         <Icon name='checkmark' />
                         Add to graph
                     </Button>
-                    <Button  color='red' inverted onClick={this.handleClose}>
+                    <Button name='elementModalOpen' color='red' inverted onClick={this.handleClose}>
                         <Icon name='remove' />
                         Cancel
                     </Button>
@@ -92,7 +123,7 @@ class Generator extends Component {
         }
 
         return (
-            <Grid.Column width={8} >
+            <Grid.Column width={8} style={{maxHeight: '100vh', overflowY: 'auto'}}>
 
             <Header size="large"  textAlign="center">
                 Bar Graph Generator
@@ -104,8 +135,22 @@ class Generator extends Component {
                     <Form.Input fluid name="ytitle"  aria-label="Input y axis title" label='Y-Axis Title:'  onChange={this.handleChange} />
                 </Form.Group>
             </Form>
-            
+            <CSVReader
+                        onFileLoaded={this.handleReadCSV}
+                        inputRef={this.fileInput}
+                        style={{display: 'none'}}
+                        onError={this.handleOnError}
+                        configOptions={{header: true /* Header row support */ }}
+                        />
+            <Button.Group>
             {this.addElementModal()}
+            <Button.Or />
+            <Button fluid  onClick={this.handleImportOffer}>
+                <Icon name='upload' />
+                Upload a CSV file
+            </Button>
+            </Button.Group>
+            
 
             {datapoints}
             
