@@ -13,7 +13,8 @@ class Generator extends Component {
             ytitle: '',
             title: '',
             elementModalOpen: false,
-            csvModalOpen: false
+            csvModalOpen: false,
+            editModalOpen: false
         }
 
         this.fileInput = React.createRef();
@@ -63,9 +64,46 @@ class Generator extends Component {
     deleteDataPoint = (barNumber) => {
     var points = this.state.addedDataPoints.filter((point) => { return point.number !== barNumber})
 
-     this.setState({addedDataPoints: points},  () => this.props.updatePreview(this.state.addedDataPoints, this.state.title, this.state.xtitle, this.state.ytitle))
+    this.setState({addedDataPoints: points},  () => this.props.updatePreview(this.state.addedDataPoints, this.state.title, this.state.xtitle, this.state.ytitle))
+    }
 
-
+    editDatapointModal = (datapoint) => {
+        
+        return (
+            <Modal  basic open={this.state.editModalOpen} onClose={this.handleClose} trigger={<Button name='editModalOpen' icon="pencil" onClick={this.handleOpen}  content="Edit"></Button>}>
+                <Header icon='pencil' content='Edit a data point' />
+                <Modal.Content >
+                    <Modal.Description>
+                    <Form autoComplete="off">
+                        <Form.Group widths='equal'>
+                            <Label basic>Label for datapoint:</Label>
+                            <Form.Input fluid name="label" aria-label="Input label for datapoint" onChange={this.handleChange} />
+                            <Label basic>Value for datapoint:</Label>
+                            <Form.Input fluid name="value" aria-label="Input value for datapoint"  onChange={this.handleChange} />
+                        </Form.Group>
+                    </Form>
+                    </Modal.Description>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button name='editModalOpen' color='green' inverted onClick={() => {
+                        var points = this.state.addedDataPoints.filter((point) => { return point.number !== datapoint.number})
+                        
+                        var newPoint = {value: this.state.value, label:this.state.label , number: points.length - 1}
+                        points.push(newPoint)
+                        this.setState({addedDataPoints: points}, () => {
+                            this.props.updatePreview(this.state.addedDataPoints, this.state.title, this.state.xtitle, this.state.ytitle)
+                            this.handleClose({target: {name: 'editModalOpen'}}) })
+                    }}>
+                        <Icon name='checkmark' />
+                        Finish Editing Datapoint
+                    </Button>
+                    <Button name='editModalOpen' color='red' inverted onClick={this.handleClose}>
+                        <Icon name='remove' />
+                        Cancel
+                    </Button>
+                </Modal.Actions>
+            </Modal>
+        )
     }
 
     renderDataPoints = () => {
@@ -78,6 +116,7 @@ class Generator extends Component {
                             <List.Item as='li'>Label:{datapoint.label}</List.Item>
                             <List.Item as='li'>Value:{datapoint.value}</List.Item>
                         </List.List> 
+                        {this.editDatapointModal(datapoint)}
                         <Button color='red' onClick={() => {this.deleteDataPoint(datapoint.number)}} >
                           Delete
                         </Button>
@@ -96,7 +135,7 @@ class Generator extends Component {
 
     addElementModal() {
         return (
-            <Modal  basic open={this.state.elementModalOpen} onClose={this.handleClose} trigger={<Button name='elementModalOpen' fluid icon="plus square" onClick={this.handleOpen} primary content="Add a data point"></Button>}>
+            <Modal  basic open={this.state.elementModalOpen} onClose={this.handleClose} trigger={<Button name='elementModalOpen' icon="plus square" onClick={this.handleOpen} primary content="Add a data point"></Button>}>
                 <Header icon='plus square' content='Add a data point' />
                 <Modal.Content >
                     <Modal.Description>
@@ -153,10 +192,10 @@ class Generator extends Component {
                         onError={this.handleOnError}
                         configOptions={{header: true /* Header row support */ }}
                         />
-            <Button.Group>
+            <Button.Group fluid>
             {this.addElementModal()}
             <Button.Or />
-            <Button fluid  onClick={this.handleImportOffer}>
+            <Button   onClick={this.handleImportOffer}>
                 <Icon name='upload' />
                 Upload a CSV file
             </Button>
