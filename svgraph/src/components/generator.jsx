@@ -77,7 +77,7 @@ class Generator extends Component {
                     <Form autoComplete="off">
                         <Form.Group widths='equal'>
                             <Label basic>Label for datapoint:</Label>
-                            <Form.Input fluid name="label" aria-label="Input label for datapoint" onChange={this.handleChange} />
+                            <Form.Input fluid name="label"  autoFocus focusable aria-label="Edit a data point pop up menu is open Input label for datapoint"  onChange={this.handleChange} />
                             <Label basic>Value for datapoint:</Label>
                             <Form.Input fluid name="value" aria-label="Input value for datapoint"  onChange={this.handleChange} />
                         </Form.Group>
@@ -142,7 +142,7 @@ class Generator extends Component {
                     <Form autoComplete="off">
                         <Form.Group widths='equal'>
                             <Label basic>Label for datapoint:</Label>
-                            <Form.Input fluid name="label" aria-label="Input label for datapoint"  onChange={this.handleChange} />
+                            <Form.Input fluid name="label" autoFocus focusable aria-label="Add a data point pop up menu is open Input label for datapoint"  onChange={this.handleChange} />
                             <Label basic>Value for datapoint:</Label>
                             <Form.Input fluid name="value" aria-label="Input value for datapoint"   onChange={this.handleChange} />
                         </Form.Group>
