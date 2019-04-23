@@ -59,6 +59,14 @@ class Generator extends Component {
             [event.target.name]: event.target.value
         }, () => this.props.updatePreview(this.state.addedDataPoints, this.state.title, this.state.xtitle, this.state.ytitle))
     }
+    
+    deleteDataPoint = (barNumber) => {
+    var points = this.state.addedDataPoints.filter((point) => { return point.number !== barNumber})
+
+     this.setState({addedDataPoints: points},  () => this.props.updatePreview(this.state.addedDataPoints, this.state.title, this.state.xtitle, this.state.ytitle))
+
+
+    }
 
     renderDataPoints = () => {
         return this.state.addedDataPoints.map((datapoint) => {
@@ -69,7 +77,10 @@ class Generator extends Component {
                         <List.List as='ul'>
                             <List.Item as='li'>Label:{datapoint.label}</List.Item>
                             <List.Item as='li'>Value:{datapoint.value}</List.Item>
-                        </List.List>                    
+                        </List.List> 
+                        <Button color='red' onClick={() => {this.deleteDataPoint(datapoint.number)}} >
+                          Delete
+                        </Button>
                     </List.Item>
         })
     }
@@ -85,14 +96,14 @@ class Generator extends Component {
 
     addElementModal() {
         return (
-            <Modal   basic open={this.state.elementModalOpen} onClose={this.handleClose} trigger={<Button name='elementModalOpen' fluid icon="plus square" onClick={this.handleOpen} primary content="Add a data point"></Button>}>
-                <Header  icon='plus square' content='Add a data point' />
+            <Modal  basic open={this.state.elementModalOpen} onClose={this.handleClose} trigger={<Button name='elementModalOpen' fluid icon="plus square" onClick={this.handleOpen} primary content="Add a data point"></Button>}>
+                <Header icon='plus square' content='Add a data point' />
                 <Modal.Content >
                     <Modal.Description>
                     <Form autoComplete="off">
                         <Form.Group widths='equal'>
                             <Label basic>Label for datapoint:</Label>
-                            <Form.Input autoFocus focusable fluid name="label" aria-label="The data point pop up menu is open Input label for datapoint"  onChange={this.handleChange} />
+                            <Form.Input fluid name="label" aria-label="Input label for datapoint"  onChange={this.handleChange} />
                             <Label basic>Value for datapoint:</Label>
                             <Form.Input fluid name="value" aria-label="Input value for datapoint"   onChange={this.handleChange} />
                         </Form.Group>
